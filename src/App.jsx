@@ -12,28 +12,37 @@ function App() {
 
   useEffect(() => {
     const nuevosBarcos = [];
-    for (let i = 0; i < 10; i++) {
-      let barco = {
-        fila: fila[Math.floor(Math.random() * 6)],
-        columna: columna[Math.floor(Math.random() * 6)],
-        hundido: false,
-      };
-      nuevosBarcos.push(barco);
+    const ubicacionesOcupadas = new Set(); 
+
+    while (nuevosBarcos.length < 10) {
+      let filaRandom = fila[Math.floor(Math.random() * 6)];
+      let columnaRandom = columna[Math.floor(Math.random() * 6)];
+      let ubicacion = `${filaRandom}-${columnaRandom}`; 
+
+      if (!ubicacionesOcupadas.has(ubicacion)) {
+        nuevosBarcos.push({
+          fila: filaRandom,
+          columna: columnaRandom,
+          hundido: false,
+        });
+        ubicacionesOcupadas.add(ubicacion); 
+      }
     }
+
     setBarcos(nuevosBarcos);
   }, []);
 
 
-  
+
   return (
     <main className='flex flex-col justify-between items-center h-svh bg-secondary'>
       <Header />
 
       <div className='flex gap-2 justify-center'>
-        <Tablero barcos={barcos} fila={fila} columna={columna}/>
+        <Tablero barcos={barcos} fila={fila} columna={columna} />
       </div>
 
-      
+
 
       <Footer />
     </main>
