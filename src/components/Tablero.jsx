@@ -1,14 +1,11 @@
 import { useState } from "react";
 import Swal from 'sweetalert2'
-import { useNavigate } from "react-router-dom";
 
 
 function Tablero({ barcos, fila, columna }) {
     const [acertados, setAcertados] = useState([]);
     const [jugadas, setJugadas] = useState(0);
     
-    const navigate = useNavigate();
-
 
     const disparo = (fil, col) => {
         setJugadas(jugadas + 1)
@@ -43,8 +40,8 @@ function Tablero({ barcos, fila, columna }) {
         let finish = barcos.every(b => b.hundido === true);
         if (finish) {
             Swal.fire({
-                title: "Deseas volver a jugar?",
-                text: `El juego termino en ${jugadas}!`,
+                title: `El juego termino en ${jugadas} jugadas !`,
+                text:'Desea volver a jugar?' ,
                 icon: "success",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -52,7 +49,7 @@ function Tablero({ barcos, fila, columna }) {
                 confirmButtonText: "Si, volver a jugar !"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    navigate('/')
+                    window.location.reload();
                 }
             });
         }
