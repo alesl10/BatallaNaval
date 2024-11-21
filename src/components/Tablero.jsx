@@ -2,7 +2,7 @@ import { useState } from "react";
 import Swal from 'sweetalert2'
 
 
-function Tablero({ barcos, fila, columna }) {
+function Tablero({ barcos, filasTablero, columnasTablero }) {
     const [acertados, setAcertados] = useState([]);
     const [jugadas, setJugadas] = useState(0);
     
@@ -65,10 +65,10 @@ function Tablero({ barcos, fila, columna }) {
         <div className='flex gap-2 justify-center flex-col'>
             <div className='flex flex-col gap-2'>
                 {
-                    fila.map((fil, i) => (
+                    filasTablero.map((fil, i) => (
                         <div key={i} className='flex gap-2 justify-center'>
                             {
-                                columna.map((col, j) => (
+                                columnasTablero.map((col, j) => (
                                     <div
                                         id={`${fil}${col}`}
                                         key={j}

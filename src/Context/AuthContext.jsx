@@ -18,7 +18,12 @@ export function AuthProvider({ children }) {
         try {
             const rsp = await login(email);
             console.log(rsp)
-
+            if (rsp.data != null) {
+                setUser(rsp.data)
+                const { token } = Cookies.get();
+                if (!token) Cookies.set("token", JSON.stringify(user));
+                setIsAuthenticated(true);
+            }
         } catch (error) {
             console.error("Error durante el inicio de sesión:", error);
             setError("Hubo un error en el servidor. Intenta nuevamente.");
