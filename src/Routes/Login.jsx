@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ const Login = () => {
                     <p>{error}</p>
                 </div>
 
-                <form onSubmit={onSubmit}>
+                <form className=' items-center ' onSubmit={onSubmit}>
                     <input
                         placeholder="email"
                         type="text"
@@ -35,10 +35,14 @@ const Login = () => {
                         className="w-full px-4 py-2 mb-2 bg-blue-500 text-yellow-300 rounded-md"
                     />
                     {errors.username && <p>Email is required</p>}
-                    <button className=" px-4 font-semibold bg-blue-500 text-yellow-300 rounded-md">
+                    <button type='submit' className=" px-4  font-semibold bg-blue-500 text-yellow-300 rounded-md">
                         Login
                     </button>
                 </form>
+                <div>
+                    <span>No tienes un usuario? </span>
+                    <button onClick={()=> console.log("pagina Registrar")} className=" px-4 font-semibold bg-blue-500 text-yellow-300 rounded-md">Registrate</button>
+                </div>
             </div>
         </div>
     );

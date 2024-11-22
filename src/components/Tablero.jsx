@@ -1,11 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from 'sweetalert2'
 
 
-function Tablero({ barcos, filasTablero, columnasTablero }) {
+function Tablero({filasTablero, columnasTablero }) {
     const [acertados, setAcertados] = useState([]);
     const [jugadas, setJugadas] = useState(0);
+    const [barcos, setBarcos] = useState([]);
     
+
+    // useEffect(() => {
+    //     const nuevosBarcos = [];
+    //     const ubicacionesOcupadas = new Set();
+    
+    //     const generarBarco = () => {
+    //         let barco = [];
+    //         let filaRandom = filasTablero[Math.floor(Math.random() * filasTablero.length)];
+    //         let columnaRandom = columnasTablero[Math.floor(Math.random() * columnasTablero.length)];
+    //         let orientacion = Math.random() < 0.5 ? 'horizontal' : 'vertical'; 
+    
+    //         for (let i = 0; i < 1; i++) { 
+    //             let fila = orientacion === 'horizontal' ? filaRandom : filaRandom + i;
+    //             let columna = orientacion === 'vertical' ? columnaRandom : columnaRandom + i;
+    
+    //             if (
+    //                 fila < 0 || fila >= filasTablero.length ||
+    //                 columna < 0 || columna >= columnasTablero.length ||
+    //                 ubicacionesOcupadas.has(`${fila}-${columna}`)
+    //             ) {
+    //                 return null; 
+    //             }
+    
+                
+    //             barco.push({ fila, columna });
+    //             ubicacionesOcupadas.add(`${fila}-${columna}`);
+    //         }
+    
+    //         return barco.length === 3 ? { id: nuevosBarcos.length + 1, coordenadas: barco, hundido: false } : null;
+    //     };
+    
+    //     while (nuevosBarcos.length < 10) {
+    //         let barcoGenerado = generarBarco();
+    //         if (barcoGenerado) {
+    //             nuevosBarcos.push(barcoGenerado);
+    //         }
+    //     }
+    
+    //     setBarcos(nuevosBarcos);
+    // }, []);
+
 
     const disparo = (fil, col) => {
         setJugadas(jugadas + 1)

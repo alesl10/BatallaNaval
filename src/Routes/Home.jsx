@@ -4,6 +4,8 @@ import Footer from '../components/Footer.jsx';
 import Tablero from '../components/Tablero.jsx';
 import { getDificultad } from '../api/dificultad.js';
 import { AuthContext } from '../Context/AuthContext.jsx';
+import { addBarco } from '../api/barco.js'
+import { addPartida } from '../api/partida.js'
 
 
 const Home = () => {
@@ -12,11 +14,8 @@ const Home = () => {
     const [dificultad, setDificultad] = useState([])
     const [filasTablero, setFilasTablero] = useState([])
     const [columnasTablero, setColumnasTablero] = useState([])
-
-
-
-    // let fila = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    // let columna = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+    const [tamañoTablero, setTamañoTablero] = useState()
+    const [nivel, setNivel] = useState()
 
 
     const obtenerDificultades = async () => {
@@ -24,7 +23,50 @@ const Home = () => {
         setDificultad(response.data.data)
     }
 
-    const crearTablero = (nivel)=>{
+    const crearPartida = async () => {
+        const modelo = { dificultadId: nivel }
+        const response = await addPartida(modelo)
+        console.log(response.data.data)
+        const idPartida = response.data.data; // id de la partida
+        //barcos grandes
+        for (let i = 0; i < 1; i++) {
+            crearBarcos(4, idPartida)
+        }
+        //barcos medianoGrande
+        for (let i = 0; i < 2; i++) {
+            crearBarcos(3, idPartida)
+        }
+        //barcos mediano
+        for (let i = 0; i < 3; i++) {
+            crearBarcos(2, idPartida)
+        }
+        //barcos pequeño
+        for (let i = 0; i < 4; i++) {
+            crearBarcos(1, idPartida)
+        }
+        crearTablero(tamañoTablero);
+    }
+
+
+
+    //Funcion para crear barcos
+    const crearBarcos = async (tamanio, partida_id) => {
+        let barco = {
+            tamanio: tamanio,
+            partida_id: partida_id
+        }
+        const response = await addBarco(barco)
+        let idBarco = response.data.data //este es el id del barco
+        barco = {
+            id: idBarco,
+            tamanio,
+            partida_id
+        }
+        setBarcos([...barcos, barco])
+    }
+
+    // funcion para crear tablero
+    const crearTablero = (nivel) => {
         let fila = []
         let columna = []
         for (let i = 1; i <= nivel; i++) {
@@ -36,43 +78,21 @@ const Home = () => {
     }
 
     const handleChange = (e) => {
-        const nivel = e.target.value
+        setNivel(e.target.value)
         if (nivel == 1) {
-            crearTablero(6)
-        }else if(nivel == 2){
-            crearTablero(8)
-        }else{
-            crearTablero(10)
+            setTamañoTablero(6)
+        } else if (nivel == 2) {
+            setTamañoTablero(8)
+        } else {
+            setTamañoTablero(10)
         }
     }
 
 
     useEffect(() => {
-        const nuevosBarcos = [];
-        const ubicacionesOcupadas = new Set();
         obtenerDificultades()
-        // console.log(user)
-        // while (nuevosBarcos.length < 10) {
-        //     let filaRandom = fila[Math.floor(Math.random() * 6)];
-        //     let columnaRandom = columna[Math.floor(Math.random() * 6)];
-        //     let ubicacion = `${filaRandom}-${columnaRandom}`;
-
-        //     if (!ubicacionesOcupadas.has(ubicacion)) {
-        //         nuevosBarcos.push({
-        //             fila: filaRandom,
-        //             columna: columnaRandom,
-        //             hundido: false,
-        //         });
-        //         ubicacionesOcupadas.add(ubicacion);
-        //     }
-        // }
-
-        // setBarcos(nuevosBarcos);
     }, []);
 
-    if (!user) {
-        return <div>Loading... </div>
-    }
 
     return (
         <main className='flex flex-col justify-between items-center h-svh bg-secondary'>
@@ -81,17 +101,33 @@ const Home = () => {
             <h4>Bienvenido {user.apodo} {user.email}</h4>
 
 
-            <select className='w-[200px]' name="dificultad" id="" onChange={handleChange}>
-                {
-                    dificultad.map((d, i) => (
-                        <option key={i} value={d.id_dificultad}>{d.tipo}</option>
-                    ))
-                }
-            </select>
+
 
             <div className='flex gap-2 justify-center'>
-                <Tablero barcos={barcos} filasTablero={filasTablero} columnasTablero={columnasTablero} />
+
+                {
+                    (filasTablero.length < 1 || columnasTablero.length < 1) ?
+                        <div className='flex flex-col gap-2  items-center'>
+
+                            <span>Seleccione un nivel</span>
+                            <select className='w-[200px]' name="dificultad" id="" onChange={handleChange}>
+                                <option value="">Dificultad</option>
+                                {
+                                    dificultad.map((d, i) => (
+                                        <option key={i} value={d.id_dificultad}>{d.tipo}</option>
+                                    ))
+                                }
+                            </select>
+
+                            <button onClick={()=>crearPartida()}>Crear Tablero</button>
+                        </div>
+
+                        :
+                        <Tablero barcos={barcos} filasTablero={filasTablero} columnasTablero={columnasTablero} />
+
+                }
             </div>
+
 
 
 
