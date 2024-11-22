@@ -41,7 +41,7 @@ const Login = () => {
                 </form>
                 <div>
                     <span>No tienes un usuario? </span>
-                    <button onClick={()=> console.log("pagina Registrar")} className=" px-4 font-semibold bg-blue-500 text-yellow-300 rounded-md">Registrate</button>
+                    <button onClick={()=> navigate("/register")} className=" px-4 font-semibold bg-blue-500 text-yellow-300 rounded-md">Registrate</button>
                 </div>
             </div>
         </div>

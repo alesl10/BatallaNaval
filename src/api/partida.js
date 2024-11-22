@@ -8,3 +8,12 @@ export const addPartida = async (dificultad) => {
         console.log(error)
     }
 }
+
+export const updatePartida = async (id)=> {
+    try {
+        const response = axios.put(`/partida/${id}`)
+        return response;
+    } catch (error) {
+        console.log(error)
+    }
+}

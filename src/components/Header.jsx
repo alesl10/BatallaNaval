@@ -1,8 +1,5 @@
 
 function Header() {
-
-
-
     return (
         <header className=" w-full flex justify-center items-center gap-4 bg-primary text-secondary ">
                 <a className="navbar-brand"  href="#">
